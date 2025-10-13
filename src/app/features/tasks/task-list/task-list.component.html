@@ -1,0 +1,39 @@
+<div class="header">
+  <div class="title-container">
+    <h1>Todos</h1>
+    <span>Hoje</span>
+  </div>
+  <div class="calendar-icon">
+    <mat-icon>calendar_today</mat-icon>
+  </div>
+</div>
+
+<mat-chip-listbox class="filters" aria-label="Filtro de tarefas" [value]="activeFilter()">
+  <mat-chip-option (click)="changeFilter('Pendente')" value="Pendente">
+    Pendentes ({{ tasksCount().pendentes }})
+  </mat-chip-option>
+  <mat-chip-option (click)="changeFilter('Completa')" value="Completa">
+    Concluídas ({{ tasksCount().concluidas }})
+  </mat-chip-option>
+  <mat-chip-option (click)="changeFilter('Perdida')" value="Perdida">
+    Perdidas ({{ tasksCount().perdidas }})
+  </mat-chip-option>
+</mat-chip-listbox>
+
+<div class="task-list-container">
+  @for (group of groupedTasks(); track group[0]) {
+    <div class="task-group">
+      <h2 class="category-title">{{ group[0] }}</h2>
+
+      @for (task of group[1]; track task.id) {
+        <app-task-list-item [task]="task"></app-task-list-item>
+      }
+    </div>
+  } @empty {
+    <div class="empty-state">
+      <p>Nenhuma tarefa encontrada.</p>
+    </div>
+  }
+</div>
+
+<app-add-task-button></app-add-task-button>

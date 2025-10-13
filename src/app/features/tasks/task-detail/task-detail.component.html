@@ -1,0 +1,59 @@
+@if (task(); as currentTask) {
+  <div class="detail-container">
+    <div class="detail-header">
+      <button mat-icon-button routerLink="/tasks" aria-label="Voltar para a lista">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span class="header-title">Detalhes</span>
+      <div>
+        <button mat-icon-button aria-label="Gerenciar modelos (não implementado)">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <button mat-icon-button [routerLink]="['/tasks/edit', currentTask.id]" aria-label="Editar tarefa">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <mat-card class="detail-content">
+      <mat-card-header>
+        <mat-card-title class="task-main-title">
+          {{ currentTask.name }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip selected color="primary">{{ currentTask.category }}</mat-chip>
+          </mat-chip-set>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if(currentTask.description) {
+          <p class="task-description">{{ currentTask.description }}</p>
+        }
+
+        <ul class="info-list">
+          <li><mat-icon>flag</mat-icon><span>Prioridade {{ currentTask.priority }}</span></li>
+          <li><mat-icon>alarm</mat-icon><span>Lembrete: {{ currentTask.reminder }}</span></li>
+          <li><mat-icon>sync</mat-icon><span>Repetição: {{ currentTask.repetition }}</span></li>
+          <li>
+            <mat-icon>date_range</mat-icon>
+            <span>
+              {{ currentTask.startDate | date:'dd/MM HH:mm' }} →
+              {{ currentTask.endDate ? (currentTask.endDate | date:'dd/MM HH:mm') : 'Indefinido' }}
+            </span>
+          </li>
+        </ul>
+
+        <div class="stats-section">
+          <h3>Estatísticas de repetição</h3>
+          <div class="heatmap-placeholder">
+            <p>(Gráfico de calor a ser implementado)</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+} @else {
+  <p>Tarefa não encontrada.</p>
+}

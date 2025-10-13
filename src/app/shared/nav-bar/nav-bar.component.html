@@ -1,0 +1,38 @@
+<mat-toolbar class="bottom-nav">
+  <a
+    class="nav-item"
+    routerLink="/tasks"
+    routerLinkActive="active-link"
+    [routerLinkActiveOptions]="{exact: true}"
+    aria-label="Ir para a lista de tarefas">
+    <mat-icon>home</mat-icon>
+    <span>Início</span>
+  </a>
+
+  <a
+    class="nav-item"
+    routerLink="/reports"
+    routerLinkActive="active-link"
+    aria-label="Ver relatórios">
+    <mat-icon>bar_chart</mat-icon>
+    <span>Relatórios</span>
+  </a>
+
+  <a
+    class="nav-item"
+    routerLink="/pomodoro"
+    routerLinkActive="active-link"
+    aria-label="Iniciar timer de foco">
+    <mat-icon>timer</mat-icon>
+    <span>Foco</span>
+  </a>
+
+  <a
+    class="nav-item"
+    routerLink="/profile"
+    routerLinkActive="active-link"
+    aria-label="Ver perfil do usuário">
+    <mat-icon>person</mat-icon>
+    <span>Perfil</span>
+  </a>
+</mat-toolbar>

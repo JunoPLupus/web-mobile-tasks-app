@@ -1,0 +1,7 @@
+:host {
+  position: fixed;
+  // Ajuste o 'bottom' para ficar acima da sua futura nav-bar
+  bottom: 80px;
+  right: 20px;
+  z-index: 100; // Garante que o botão fique acima de outros elementos
+}

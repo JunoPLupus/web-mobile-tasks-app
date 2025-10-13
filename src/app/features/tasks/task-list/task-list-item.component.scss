@@ -1,0 +1,57 @@
+:host {
+  display: block; // Garante que o componente ocupe seu próprio espaço
+}
+
+mat-card {
+  // Remove o padding padrão do mat-card para termos controle total
+  padding: 16px !important;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+}
+
+.task-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-details {
+  flex-grow: 1;
+}
+
+.task-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px; // Espaço entre os ícones/textos
+  color: #6b778c; // Cor cinza para as metainformações
+  font-size: 14px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  mat-icon {
+    font-size: 18px;
+    // Ajusta a altura do ícone para alinhar com o texto
+    height: 18px;
+    width: 18px;
+  }
+}
+
+// Customiza o tamanho do checkbox para se adequar ao design mobile
+::ng-deep .mat-mdc-checkbox {
+  --mdc-checkbox-state-layer-size: 36px;
+}

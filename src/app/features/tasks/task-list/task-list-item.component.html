@@ -1,0 +1,30 @@
+<mat-card (click)="navigateToDetail()">
+  <div class="task-content">
+    <div class="task-details">
+      <p class="task-name">{{ task.name }}</p>
+
+      <div class="task-meta">
+        @if (task.repetition !== 'Nenhuma') {
+          <span class="meta-item">
+            <mat-icon>sync</mat-icon>
+            <span>{{ task.repetition }}</span>
+          </span>
+        }
+
+        @if (task.endDate) {
+          <span class="meta-item">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ task.endDate | date:'dd/MM HH:mm' }}</span>
+          </span>
+        }
+      </div>
+    </div>
+
+    <mat-checkbox
+      [checked]="task.status === 'Completa'"
+      (change)="onStatusChange($event)"
+      (click)="$event.stopPropagation()"
+      aria-label="Marcar tarefa como concluída">
+    </mat-checkbox>
+  </div>
+</mat-card>

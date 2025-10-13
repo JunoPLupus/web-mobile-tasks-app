@@ -1,0 +1,8 @@
+@if (taskToEdit()) {
+  <app-task-form
+    [task]="taskToEdit()"
+    (save)="handleSave($event)">
+  </app-task-form>
+} @else {
+  <p>Carregando tarefa ou tarefa não encontrada...</p>
+}
