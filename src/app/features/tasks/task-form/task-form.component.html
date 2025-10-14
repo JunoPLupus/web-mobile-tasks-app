@@ -8,7 +8,7 @@
     <button mat-icon-button type="submit" [disabled]="taskForm.invalid" aria-label="Salvar tarefa">
       <mat-icon>check</mat-icon>
     </button>
-  </div>
+  </div> <!-- fim form-header -->
 
   <mat-form-field appearance="outline">
     <mat-label>Tag</mat-label>
@@ -29,14 +29,26 @@
     <mat-slider min="1" max="3" step="1" discrete>
       <input matSliderThumb formControlName="priority">
     </mat-slider>
-  </div>
+  </div> <!-- fim priority-group -->
 
-  <mat-form-field appearance="outline">
-    <mat-label>Término</mat-label>
-    <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" placeholder="Indefinido">
-    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #endDatePicker></mat-datepicker>
-  </mat-form-field>
+  <div class="date-time-wrapper">
+    <mat-form-field appearance="outline">
+      <mat-label>Término</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" placeholder="Indefinido">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="time-field">
+      <mat-label>Hora</mat-label>
+      <input matInput type="time" formControlName="endTime">
+    </mat-form-field>
+  </div> <!-- fim date-time-wrapper -->
+
+  @if(taskForm.hasError('dateRange')) {
+    <mat-error>
+      A data de término não pode ser anterior à data de início.
+    </mat-error>
+  }
 
   @if(showAdvanced()) {
     <mat-form-field appearance="outline">
@@ -44,12 +56,18 @@
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Início</mat-label>
-      <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
-      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #startDatePicker></mat-datepicker>
-    </mat-form-field>
+    <div class="date-time-wrapper">
+      <mat-form-field appearance="outline">
+        <mat-label>Início</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="time-field">
+        <mat-label>Hora</mat-label>
+        <input matInput type="time" formControlName="startTime">
+      </mat-form-field>
+    </div> <!-- fim date-time-wrapper -->
 
     <mat-form-field appearance="outline">
       <mat-label>Lembrete</mat-label>
@@ -63,7 +81,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Frequência de repetição</mat-label>
       <mat-select formControlName="repetition">
-        @for(rep of repetitions; track rep) {
+        @for(rep of repetition; track rep) {
           <mat-option [value]="rep">{{ rep }}</mat-option>
         }
       </mat-select>

@@ -1,4 +1,4 @@
-import { Injectable, signal, computed } from '@angular/core';
+import {Injectable, signal, computed, effect} from '@angular/core';
 import { Task, TaskStatus } from '../../features/tasks/task.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,13 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class TaskStorageService {
 
-  // Usamos 'writableSignal' com `signal()` para criar um estado que podemos modificar.
-  // É privado (#) para que os componentes não possam modificá-lo diretamente, garantindo que toda alteração passe pelos métodos deste serviço.
-  #tasks = signal<Task[]>([]);
+  #tasks = signal<Task[]>([]); // signal que pode ser modificado e é privado (#)
+  #currentTime = signal(new Date());
+
+
 
   // Signal computado que processa as tarefas
   public tasksWithDynamicStatus = computed(() => {
-    const now = new Date();
+    const now = this.#currentTime();
 
     return this.#tasks().map(task => { // Pega as tarefas do signal original
 
@@ -50,9 +51,19 @@ export class TaskStorageService {
   });
 
   constructor() {
-    // Carrega os dados iniciais quando o serviço é criado.
-    // No futuro, aqui seria a chamada para uma API.
-    this.loadInitialData();
+    this.loadTasksFromStorage();
+
+    setInterval(() => { // Atualiza o tempo atual a cada minuto para garantir que as tarefas sejam atualizadas.
+      this.#currentTime.set(new Date());
+    }, 60000);
+
+    effect(() => { // Efeito para salvar as tarefas automaticamente no localStorage (se ainda não tiver)
+      try {
+        localStorage.setItem('my-tasks', JSON.stringify(this.#tasks()));
+      } catch (e) {
+        console.error('Erro ao salvar tarefas no localStorage:', e);
+      }
+    });
   }
 
   private loadInitialData() {
@@ -95,7 +106,20 @@ export class TaskStorageService {
     this.#tasks.set(mockTasks);
   }
 
-  // --- MÉTODOS PÚBLICOS PARA MANIPULAR O ESTADO ---
+  private loadTasksFromStorage(): void {
+    const storedTasks = localStorage.getItem('my-tasks');
+    if (storedTasks) {
+      // Precisamos converter as strings de data de volta para objetos Date
+      const tasks = JSON.parse(storedTasks).map((task: Task) => ({
+        ...task,
+        startDate: new Date(task.startDate),
+        endDate: task.endDate ? new Date(task.endDate) : undefined,
+      }));
+      this.#tasks.set(tasks);
+    } else {
+      this.loadInitialData();
+    }
+  }
 
   /**
    * Adiciona uma nova tarefa à lista.
@@ -151,6 +175,6 @@ export class TaskStorageService {
     // Importante: este método deve buscar na fonte original de dados (#tasks),
     // não na lista com status dinâmico, para garantir que você obtenha o estado real armazenado.
 
-    return this.tasks().find(task => task.id === id);
+    return this.#tasks().find(task => task.id === id);
   }
 }

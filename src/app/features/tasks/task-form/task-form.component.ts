@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
-import { Task } from '../task.model';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-// Importações do Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,6 +11,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule} from '@angular/material/slider';
+
+import {Task, TaskPriority} from '../task.model';
+
+export function dateRangeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const startDate = control.get('startDate')?.value;
+    const endDate = control.get('endDate')?.value;
+
+    // Se ambas as datas existirem e a data de início for posterior à de término
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      // Retorna um objeto de erro. O nome 'dateRange' pode ser o que quisermos.
+      return { dateRange: true };
+    }
+
+    // Se a validação passar, retorna null
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-task-form',
@@ -31,8 +48,8 @@ import { MatSliderModule} from '@angular/material/slider';
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss'
 })
+
 export class TaskFormComponent implements OnInit {
-  // --- Entradas e Saídas do Componente ---
 
   @Input() task?: Task; // Recebe uma tarefa existente para o modo de edição. É opcional.
 
@@ -40,7 +57,7 @@ export class TaskFormComponent implements OnInit {
 
   // --- Injeção de Dependências ---
   private fb = inject(FormBuilder);
-  private locationService = inject(Location);  // <-- Injete o serviço Location
+  private locationService = inject(Location);  // <-- Injeta o serviço Location
 
   // --- Estado Interno do Componente ---
   taskForm!: FormGroup;
@@ -50,7 +67,7 @@ export class TaskFormComponent implements OnInit {
   // Dados para os selects do formulário
   categories = ['Estudos', 'Trabalho', 'Casa'];
   reminders = ['Nenhum', '30m', '1h', '1d', '1w'];
-  repetitions = ['Nenhuma', 'Diária', 'Semanal', 'Mensal'];
+  repetition = ['Nenhuma', 'Diária', 'Semanal', 'Mensal'];
 
   ngOnInit(): void {
     this.isEditMode = !!this.task; // Define se está em modo de edição
@@ -60,18 +77,26 @@ export class TaskFormComponent implements OnInit {
     this.initForm();
   }
 
-  formatPriorityLabel(value: number): string {
-    if (value === 1) return 'Baixa';
+
+
+  formatPriorityLabel(value: number): TaskPriority {
     if (value === 2) return 'Média';
     if (value === 3) return 'Alta';
-    return '';
+
+    return 'Baixa'; // Se não for Média nem Alta, retorna Baixa
+  }
+
+  private formatTime(date:Date | undefined | null): string {  // Função para extrair a hora de um objeto Date no formato "HH:mm"
+    if (!date) return '';
+
+    return new Date(date).toTimeString().slice(0, 5); // new Date(date) cria uma cópia para não modificar o original
   }
 
   private initForm(): void {
     // Mapeia a prioridade de texto para número
     const priorityMap: { [key: string]: number } = { 'Baixa': 1, 'Média': 2, 'Alta': 3 };
     const initialPriorityValue = this.task ? priorityMap[this.task.priority] : 1;
-
+    const initialStartTime = this.formatTime(this.task?.startDate || new Date());
 
     this.taskForm = this.fb.group({
       // O valor inicial de cada campo depende se estamos editando ou criando
@@ -79,12 +104,19 @@ export class TaskFormComponent implements OnInit {
       category: [this.task?.category || 'Estudos', Validators.required],
       description: [this.task?.description || ''],
       priority: [initialPriorityValue, Validators.required],
-      startDate: [this.task?.startDate || new Date()],
+
+      startDate: [this.task?.startDate || new Date(), Validators.required], // A data de início é obrigatória
       endDate: [this.task?.endDate || null],
-      reminder: [this.task?.reminder || 'Nenhum'],
-      repetition: [this.task?.repetition || 'Nenhuma'],
-      // Este campo controla a checkbox "continuar adicionando"
-      keepAdding: [false]
+
+      startTime: [initialStartTime, Validators.required],
+      endTime: [this.formatTime(this.task?.endDate)],
+
+      reminder: [this.task?.reminder || 'Nenhum', Validators.required],
+      repetition: [this.task?.repetition || 'Nenhuma', Validators.required],
+
+      keepAdding: [false] // Este campo controla a checkbox "continuar adicionando"
+    }, {
+      validators: dateRangeValidator() // Adiciona o validador customizado ao grupo de formulários
     });
   }
 
@@ -100,6 +132,21 @@ export class TaskFormComponent implements OnInit {
 
     const formValue = this.taskForm.value;
 
+    const startDate = new Date(formValue.startDate);
+    const [startHours, startMinutes] = formValue.startTime.split(':').map(Number);
+    startDate.setHours(startHours, startMinutes);
+
+    let endDate: Date | null = null;
+    if (formValue.endDate) {
+      endDate = new Date(formValue.endDate);
+      if (formValue.endTime) {
+        const [endHours, endMinutes] = formValue.endTime.split(':').map(Number);
+        endDate.setHours(endHours, endMinutes);
+      } else {
+        endDate.setHours(23, 59);
+      }
+    }
+
     // Converte o valor numérico do slider de volta para texto antes de salvar
     const priorityText = this.formatPriorityLabel(formValue.priority);
 
@@ -109,9 +156,15 @@ export class TaskFormComponent implements OnInit {
       // Se estiver em modo de edição, mantém o ID e status originais
       id: this.task?.id || '', // O ID real será gerado no service
       status: this.task?.status || 'Pendente',
-      // Pega os valores do formulário
-      ...formValue,
-      priority: priorityText // Usa o valor convertido
+      name: formValue.name,
+      category: formValue.category,
+      description: formValue.description,
+      priority: priorityText,
+      reminder: formValue.reminder || 'Nenhum',
+      repetition: formValue.repetition || 'Nenhuma',
+
+      startDate: startDate,
+      endDate: endDate || undefined, // Se endDate for null, define como undefined para o caso de tarefas sem data de término
     };
 
     this.save.emit(taskData);
@@ -131,4 +184,5 @@ export class TaskFormComponent implements OnInit {
       });
     }
   }
+
 }

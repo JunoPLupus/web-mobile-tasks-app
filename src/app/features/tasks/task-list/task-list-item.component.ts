@@ -1,13 +1,15 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Task } from '../task.model';
-import { TaskStorageService } from '../../../shared/task-storage/task-storage.service';
+import { Router } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
-import {Router} from '@angular/router';
+import { Task } from '../task.model';
+import { TaskStorageService } from '../../../shared/task-storage/task-storage.service';
+import { RelativeDatePipe } from '../../../shared/pipes/relative-date.pipe';
+
 
 @Component({
   selector: 'app-task-list-item',
@@ -16,10 +18,14 @@ import {Router} from '@angular/router';
     CommonModule,
     DatePipe,
 
-    // Módulos do Material
     MatCardModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+
+    RelativeDatePipe
+  ],
+  providers: [
+    DatePipe
   ],
   templateUrl: './task-list-item.component.html',
   styleUrl: './task-list-item.component.scss'

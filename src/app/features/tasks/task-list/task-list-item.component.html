@@ -1,5 +1,6 @@
 <mat-card (click)="navigateToDetail()">
   <div class="task-content">
+
     <div class="task-details">
       <p class="task-name">{{ task.name }}</p>
 
@@ -14,11 +15,12 @@
         @if (task.endDate) {
           <span class="meta-item">
             <mat-icon>schedule</mat-icon>
-            <span>{{ task.endDate | date:'dd/MM HH:mm' }}</span>
+            <span>{{ task.endDate | relativeDate }}</span> <!--Exibe a data formatada pelo pipe 'relativeDate'-->
           </span>
         }
-      </div>
-    </div>
+
+      </div> <!-- fim task-meta -->
+    </div> <!-- fim task-details -->
 
     <mat-checkbox
       [checked]="task.status === 'Completa'"
@@ -26,5 +28,7 @@
       (click)="$event.stopPropagation()"
       aria-label="Marcar tarefa como concluída">
     </mat-checkbox>
-  </div>
+
+  </div> <!-- fim task-content -->
+
 </mat-card>
