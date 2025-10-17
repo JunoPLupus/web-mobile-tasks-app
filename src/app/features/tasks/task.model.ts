@@ -10,9 +10,7 @@ export interface Task {
   name: string;
   status: TaskStatus;
 
-  // Usaremos apenas 'Estudos' e 'Trabalho' no exemplo.
-  // No futuro, isso pode ser um ID referenciando uma tabela de Tags.
-  category: 'Estudos' | 'Trabalho' | 'Casa';
+  category: 'Estudos' | 'Trabalho' | 'Casa'; // No futuro, isso pode ser um ID referenciando uma tabela de Tags.
 
   description?: string;
   priority: TaskPriority;
@@ -24,4 +22,17 @@ export interface Task {
   repetition: TaskRepetition;
 
   completionHistory?: Date[];
+
+  /**
+   * Se esta tarefa for uma "exceção" (uma ocorrência específica de uma tarefa recorrente
+   * que foi modificada ou completada), este campo conterá o ID da tarefa "mãe" (a regra).
+   */
+  recurrenceParentId?: string;
+
+  /**
+   * Se esta tarefa for uma "exceção", esta é a data original da ocorrência.
+   * Ex: A tarefa "mãe" é "Levar o lixo" (diária), e o usuário completa a de hoje.
+   * Criamos uma tarefa "exceção" com `occurrenceDate` sendo a data de hoje.
+   */
+  occurrenceDate?: Date;
 }

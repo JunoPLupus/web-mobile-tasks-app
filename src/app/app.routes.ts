@@ -23,7 +23,11 @@ export const routes: Routes = [
     path: 'tasks/edit/:id', // <-- Nossa nova rota com um parâmetro dinâmico ':id'
     loadComponent: () =>
       import('./features/tasks/task-edit/task-edit.component').then(m => m.TaskEditComponent)
-  }
+  },
+  {
+    path: 'reports',
+    loadComponent: () => import('./features/reports/reports-page/reports-page.component').then(m => m.ReportsPageComponent)
+  },
   /*
   { path: 'profile', component: ProfileSettingsComponent },
   { path: 'reports', component: ReportDashboardComponent },*/

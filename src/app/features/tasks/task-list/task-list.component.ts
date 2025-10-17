@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {Component, computed, inject, Signal, signal} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { TaskStorageService } from '../../../shared/task-storage/task-storage.service';
 import { Task, TaskStatus } from '../task.model';
@@ -50,6 +50,35 @@ export class TaskListComponent {
   selectedCategory = signal<string>('Todos');
   selectedDate = signal<Date>(new Date()); // Começa com data atual
 
+  private tasksForSelectedDate: Signal<Task[]>;
+
+  constructor() {
+    this.tasksForSelectedDate = this.taskService.getTasksForDate(this.selectedDate);  // O serviço nos devolve um novo signal que já é reativo à nossa data selecionada.
+  }
+
+  private tasksFilteredByCategory = computed(() => {
+
+    const tasks = this.tasksForSelectedDate();
+    const categoryFilter = this.selectedCategory();
+
+    return tasks.filter(task => {
+      if (categoryFilter === 'Todos') return true;
+
+      return task.category === categoryFilter;
+    }); // fim 'tasks.filter'
+
+  }); // fim 'tasksFilteredByCategory'
+
+  tasksCount = computed(() => {
+    const tasks = this.tasksFilteredByCategory();
+
+    return {
+      pendentes: tasks.filter(t => t.status === 'Pendente').length,
+      concluidas: tasks.filter(t => t.status === 'Completa').length,
+      perdidas: tasks.filter(t => t.status === 'Perdida').length
+    }
+  }); // fim 'tasksCount'
+
   displayDate = computed(() => {
     const today = new Date();
     const tomorrow = new Date();
@@ -64,48 +93,12 @@ export class TaskListComponent {
     else {
       return this.datePipe.transform(this.selectedDate(), 'dd/MM');
     }
-  });
+  }); // fim 'displayDate'
 
-  private tasksFilteredByDateAndCategory = computed(() => {
-    const tasks = this.taskService.tasks();
-    const categoryFilter = this.selectedCategory();
-    const dateFilter = this.selectedDate();
-
-    const selectedDay = new Date(new Date(dateFilter).setHours(0,0,0,0));
-
-    const tasksByDate = tasks.filter(task => {
-
-      const taskStartDay = new Date(new Date(task.startDate).setHours(0, 0, 0, 0));
-      const taskEndDay = task.endDate ? new Date(new Date(task.endDate).setHours(0, 0, 0, 0)) : taskStartDay; // Se não houver data de término, assume que ela termina no mesmo dia do início
-
-      return selectedDay >= taskStartDay && selectedDay <= taskEndDay // A tarefa é exibida se a data selecionada estiver entre o início e o fim da tarefa
-    });
-
-    return tasksByDate.filter(task => {
-
-      if (categoryFilter === 'Todos') {
-        return true; // Retorna true para todas as tarefas/categorias
-
-      } else {
-        return task.category === categoryFilter; // Retorna true se a categoria da tarefa for igual ao filtro
-      }
-
-    });
-  });
-
-  tasksCount = computed(() => {
-    const tasks = this.tasksFilteredByDateAndCategory();
-
-    return {
-      pendentes: tasks.filter(t => t.status === 'Pendente').length,
-      concluidas: tasks.filter(t => t.status === 'Completa').length,
-      perdidas: tasks.filter(t => t.status === 'Perdida').length
-    }
-  });
 
   groupedTasks = computed(() => {
 
-    const tasks = this.tasksFilteredByDateAndCategory();
+    const tasks = this.tasksFilteredByCategory();
     const statusFilter = this.selectedStatus();
 
     const filteredTasks = tasks.filter(task => // Filtra por status

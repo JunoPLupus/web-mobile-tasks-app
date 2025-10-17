@@ -1,9 +1,14 @@
+.task-list-page {
+  padding: 0 16px; // Adiciona 16px de espaçamento nas laterais
+}
+
 .title-container {
   display: flex;
   // 'baseline' alinha a base do texto "Todos" com a base do texto "Hoje",
   // o que fica visualmente mais agradável.
-  align-items: baseline;
-  gap: 1rem; // Adiciona um espaço entre o botão e o texto "Hoje"
+  flex-direction: column; // <-- MUDA A DIREÇÃO PARA VERTICAL (EMPILHA)
+  align-items: flex-start; // <-- Alinha os itens à esquerda dentro da coluna
+  // gap: 8px; // <-- REMOVA ou comente o gap horizontal, não é mais necessário
 }
 
 .category-filter-btn {
@@ -41,6 +46,10 @@
   gap: 8px;
   margin-bottom: 24px;
 
+  .mat-mdc-chip .mat-mdc-chip-action-label {
+    font-size: 11px !important;
+  }
+
   .mat-mdc-chip {
     background-color: #e9ecef;
     cursor: pointer; // Adiciona um feedback visual de que o chip é clicável
@@ -50,4 +59,42 @@
     background-color: #e3d5f5 !important;
     color: #673ab7 !important;
   }
+}
+
+// Espaçamento principal do header
+.header {
+  display: flex;
+  justify-content: space-between; // <-- A MÁGICA: empurra os itens para as extremidades
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+// Ajuste o tamanho e o alinhamento da parte do título
+.title-container {
+  display: flex;
+  align-items: baseline;
+  gap: 8px; // Diminui o espaço entre "Todos" e "Hoje"
+}
+
+// Diminua o tamanho da fonte do título
+.category-filter-btn {
+  padding: 0 !important;
+  font-size: 20px; // <-- Diminuído de 28px
+  font-weight: bold;
+  line-height: 1;
+}
+
+// PASSO 4: Diminua o tamanho da fonte da data
+.date-display {
+  color: #6b778c;
+  font-size: 16px; // <-- Mantém o mesmo tamanho do título
+  font-weight: normal;
+}
+
+.category-title {
+  font-size: 16px;       // Tamanho de fonte bem menor
+  font-weight: 500;      // Um pouco mais grosso que o normal, mas não "bold"
+  color: #5e6c84;        // Uma cor de texto mais suave
+  margin-top: 24px;      // Espaço acima do título
+  margin-bottom: 12px;   // Espaço entre o título e as tarefas
 }

@@ -15,18 +15,35 @@ import { MatSliderModule} from '@angular/material/slider';
 import {Task, TaskPriority} from '../task.model';
 
 export function dateRangeValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const startDate = control.get('startDate')?.value;
-    const endDate = control.get('endDate')?.value;
 
-    // Se ambas as datas existirem e a data de início for posterior à de término
-    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      // Retorna um objeto de erro. O nome 'dateRange' pode ser o que quisermos.
-      return { dateRange: true };
+  return (form: AbstractControl): ValidationErrors | null => {
+
+    const startDate = form.get('startDate')?.value;
+    const startTime = form.get('startTime')?.value;
+    const endDate = form.get('endDate')?.value;
+    const endTime = form.get('endTime')?.value;
+
+    if ( !startDate || !startTime || !endDate ) { // A validação só acontece se tivermos uma data de início e uma de término.
+      return null; // Não há erro se a data de término não for preenchida.
     }
 
-    // Se a validação passar, retorna null
-    return null;
+    // Construindo o objeto Date completo para o `Início`
+    const startDateTime = new Date(startDate);
+    const [startHours, startMinutes] = startTime.split(':').map(Number);
+    startDateTime.setHours(startHours, startMinutes);
+
+    // Construindo o objeto Date completo para o `Término`
+    const endDateTime = new Date(endDate);
+    const finalEndTime = endTime || '23:59'; // Se a hora de término não foi preenchida, usa 23:59 como padrão para a validação.
+    const [endHours, endMinutes] = finalEndTime.split(':').map(Number);
+    endDateTime.setHours(endHours, endMinutes);
+
+    // Compara os objetos Date completos
+    if (startDateTime > endDateTime) {
+      return { dateRange: true }; // Retorna erro se o início for depois do fim.
+    }
+
+    return null; // Retorna null se a validação passar.
   };
 }
 

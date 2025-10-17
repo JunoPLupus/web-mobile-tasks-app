@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { Task } from '../task.model';
 import { TaskStorageService } from '../../../shared/task-storage/task-storage.service';
@@ -14,7 +15,9 @@ import { TaskStorageService } from '../../../shared/task-storage/task-storage.se
   ],
   templateUrl: './task-edit.component.html',
 })
+
 export class TaskEditComponent implements OnInit {
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private taskService = inject(TaskStorageService);
@@ -29,7 +32,7 @@ export class TaskEditComponent implements OnInit {
 
     if (taskId) {
       // Se um ID foi encontrado, busca a tarefa no serviço.
-      const existingTask = this.taskService.getTaskById(taskId);
+      const existingTask = this.taskService.getTaskOrOccurrenceById(taskId);
       this.taskToEdit.set(existingTask);
     } else {
       // Se não houver ID, talvez redirecionar para a página de erro ou para a lista.
