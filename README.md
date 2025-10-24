@@ -10,7 +10,7 @@ O objetivo é gerenciar tarefas de forma simples e intuitiva, permitindo **adici
 ---
 
 ## 🎨 Wireframe
-![Wireframe - Task App.jpg](src/resources/Wireframe - Task App.jpg)
+![Wireframe - Task App.jpg]([src/resources/Wireframe - Task App.jpg](https://github.com/JunoPLupus/web-mobile-tasks-app/blob/master/src/resources/Wireframe%20-%20Task%20App.jpg))
 
 O projeto foi desenvolvido com base em um **wireframe** previamente planejado, utilizando a ferramenta 'Figma'.
 
@@ -41,18 +41,18 @@ O projeto foi desenvolvido com base em um **wireframe** previamente planejado, u
 > - Git
 
 1. Acesse o terminal;  
-<br>
+
 2. Clone o repositório:
   ``git clone https://github.com/JunoPLupus/web-mobile-tasks-app``  
-<br>
+
 3. Navegue até o diretório do projeto:
    ``cd web-mobile-tasks-app``  
-<br>
+
 4. Instale as dependências:
   ``npm install``  
-<br>
+
 5. Inicie o servidor de desenvolvimento:
   ``ng serve`` ou ``npm serve --open``(se preferir abrir automaticamente no navegador).  
-<br>
+
 6. Abra o navegador e acesse:
   ``http://localhost:4200``  
