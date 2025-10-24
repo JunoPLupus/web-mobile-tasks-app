@@ -10,7 +10,7 @@ O objetivo é gerenciar tarefas de forma simples e intuitiva, permitindo **adici
 ---
 
 ## 🎨 Wireframe
-![Wireframe - Task App.jpg](src/resources/Wireframe%20-%20Task%20App.jpg)
+![Wireframe - Task App.jpg](src/resources/Wireframe - Task App.jpg)
 
 O projeto foi desenvolvido com base em um **wireframe** previamente planejado, utilizando a ferramenta 'Figma'.
 
@@ -55,4 +55,4 @@ O projeto foi desenvolvido com base em um **wireframe** previamente planejado, u
   ``ng serve`` ou ``npm serve --open``(se preferir abrir automaticamente no navegador).  
 <br>
 6. Abra o navegador e acesse:
-  ``http://localhost:4200``
+  ``http://localhost:4200``  
