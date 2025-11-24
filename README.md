@@ -1,59 +1,58 @@
-# MobileTasksApp
+# 📝 Aplicativo Todo List
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+## 📌 Descrição do Projeto
+Este projeto tem por objetivo a criação de um aplicativo **Todo List**.
 
-## Development server
+Este projeto foi criado como parte da disciplina de *Projeto de interface Web ministrada pelo professor: Thiago Guimarães Tavares no curso de Sistemas para Internet do IFTO - Campus Palmas*.
 
-To start a local development server, run:
+O objetivo é gerenciar tarefas de forma simples e intuitiva, permitindo **adicionar**, **marcar como concluída** e **excluir** tarefas.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🎨 Wireframe
+![Wireframe - Task App.jpg]([src/resources/Wireframe - Task App.jpg](https://github.com/JunoPLupus/web-mobile-tasks-app/blob/master/src/resources/Wireframe%20-%20Task%20App.jpg))
 
-## Code scaffolding
+O projeto foi desenvolvido com base em um **wireframe** previamente planejado, utilizando a ferramenta 'Figma'.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## ⚙️ Funcionalidades Implementadas
+- ✅ Adicionar novas tarefas
+- 🗑️ Excluir tarefas
+- ✏️ Editar tarefas
+- 📈 Relatório de desempenho
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🤖 Funcionalidades Futuras
+- ⏰ Pomodoro Timer
+- 🌙 Alternar entre tema claro/escuro
+- 🔔 Notificações de lembrete
+- 👤 Login de usuário
 
-```bash
-ng generate --help
-```
+## 💻 Tecnologias Utilizadas
+- Angular
+- HTML
+- SCSS
+- TypeScript
 
-## Building
+## 🚀 Como Executar o Projeto
+> Pré-Requisitos:
+> - Node.js
+> - Angular CLI
+> - Git
 
-To build the project run:
+1. Acesse o terminal;  
 
-```bash
-ng build
-```
+2. Clone o repositório:
+  ``git clone https://github.com/JunoPLupus/web-mobile-tasks-app``  
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+3. Navegue até o diretório do projeto:
+   ``cd web-mobile-tasks-app``  
 
-## Running unit tests
+4. Instale as dependências:
+  ``npm install``  
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+5. Inicie o servidor de desenvolvimento:
+  ``ng serve`` ou ``npm serve --open``(se preferir abrir automaticamente no navegador).  
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+6. Abra o navegador e acesse:
+  ``http://localhost:4200``  
