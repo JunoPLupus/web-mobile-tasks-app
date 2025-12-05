@@ -1,19 +1,17 @@
 ---
 Versão: "1.0"
 Data de criação: 2025-11-08T00:00:00.000Z
-Data da última atualização: 2025-11-08T00:00:00.000Z
-sticker: lucide//align-left
+Data da última atualização: 2025-12-05T08:28:00
 ---
-[[Requisitos - 1.0]]
+[Requisitos - 1.0](docs/Requisitos_01.0.md)
 
 # Diagrama de Casos de Uso
 ---
-![[1 - Ativos/Level Me Up App/imagens/Diagrama de Casos de Uso.jpg]]
+![Diagrama de Casos de Uso](docs/Diagrama-de-Casos-de-Uso.jpg)
 
 
 # Detalhamento de Casos de Uso
 ---
-
 
 ## <font color="#8db3e2">UC01 - Listar Tarefas</font>
 
@@ -147,7 +145,7 @@ sticker: lucide//align-left
 	2. O sistema define automaticamente a data de início para a data que estava selecionada no filtro da tela inicial;
 	3. O caso de uso prossegue a partir do *passo 3* do fluxo principal.
 
-- **A.07 - Filtro 'Tag' diferente de 'Todos' na tela inicial
+- **A.07 - Filtro 'Tag' diferente de 'Todos' na tela inicial**
 	1. Ocorre durante o *passo 2* do fluxo principal;
 	2. O sistema define automaticamente a tag para a tag que estava selecionada no filtro da tela inicial;
 	3. O caso de uso prossegue a partir do *passo 3* do fluxo principal.

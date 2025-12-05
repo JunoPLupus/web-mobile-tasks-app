@@ -1,13 +1,12 @@
 ---
 Versão: "1.0"
 Data de criação: 2025-11-08T00:00:00.000Z
-Data da última atualização: 2025-11-08T00:00:00.000Z
-sticker: lucide//align-left
+Data da última atualização: 2025-12-05T08:29:00
 ---
 ## Requisitos Funcionais (RFs)
 ---
 
-1.  O usuário deve poder criar/ler/atualizar/deletar (CRUD) "Tarefas".
+1. O usuário deve poder criar/ler/atualizar/deletar (CRUD) "Tarefas".
 	
 2. Ao criar/editar uma tarefa, o usuário deve poder associá-la a uma ou mais Habilidades.
 	
@@ -15,7 +14,7 @@ sticker: lucide//align-left
 	
 4. Ao criar/editar uma tarefa, o usuário deve poder definir uma frequência de repetição.
 	
-5. 7. O usuário deve poder criar/ler/atualizar/deletar (CRUD) "Tags".
+5. O usuário deve poder criar/ler/atualizar/deletar (CRUD) "Tags".
 	
 6. O usuário deve poder criar/ler/atualizar/deletar (CRUD) "Habilidades" (ex.: "Engenharia de Software").
 	
